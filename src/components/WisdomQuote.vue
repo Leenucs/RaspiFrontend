@@ -6,6 +6,12 @@
     <div class="author">
       {{ result.contents.quotes[0].author }}
     </div>
+
+    <ul v-if="errors && errors.length">
+      <li v-for="error of errors">
+        {{error}}
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -20,7 +26,7 @@ export default {
     }
   },
 
-  // Fetches posts when the component is created.
+  // 10 requests per hour max !
   created() {
     axios.get(`http://quotes.rest/qod.json?category=inspire`)
     .then(response => {

@@ -1,7 +1,11 @@
 <template>
   <div>
-
-</div>
+    <div class="cryptos">
+      <img src="../assets/cryptos/bitcoin.png" height="20" width="20"> {{ bitcoin }} € </br>
+      <img src="../assets/cryptos/ether.png" height="20" width="20"> {{ ether }} € </br>
+      <img src="../assets/cryptos/stellar.png" height="20" width="20"> {{ stellar }} €
+    </div>
+  </div>
 </template>
 
 <script>
@@ -10,30 +14,43 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      posts: [],
+      ether: [],
+      bitcoin: [],
+      stellar: [],
       errors: []
     }
   },
 
-  // Fetches posts when the component is created.
   created() {
-    axios.get(`https://www.prevision-meteo.ch/services/json/lat=47.218371lng=-1.553621000000021`)
+    axios.get(`https://api.cryptonator.com/api/ticker/btc-eur`)
     .then(response => {
       // JSON responses are automatically parsed.
-      this.posts = response.data
+      this.bitcoin = parseFloat(response.data.ticker.price).toFixed(2)
     })
     .catch(e => {
       this.errors.push(e)
     })
-
-    // async / await version (created() becomes async created())
-    //
-    // try {
-    //   const response = await axios.get(`http://jsonplaceholder.typicode.com/posts`)
-    //   this.posts = response.data
-    // } catch (e) {
-    //   this.errors.push(e)
-    // }
+    axios.get(`https://api.cryptonator.com/api/ticker/eth-eur`)
+    .then(response => {
+      // JSON responses are automatically parsed.
+      this.ether = parseFloat(response.data.ticker.price).toFixed(2)
+    })
+    .catch(e => {
+      this.errors.push(e)
+    })
+    axios.get(`https://api.cryptonator.com/api/ticker/xlm-eur`)
+    .then(response => {
+      // JSON responses are automatically parsed.
+      this.stellar = parseFloat(response.data.ticker.price).toFixed(2)
+    })
+    .catch(e => {
+      this.errors.push(e)
+    })
   }
 }
 </script>
+
+<style>
+  .cryptos {
+    background-color: blue!important;
+  }
